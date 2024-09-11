@@ -1,0 +1,16 @@
+gpt_code_generate:
+  system: "You are a helpful assistant that parses the user's prompt and returns the appropriate Python code to get data from Yahoo Finance. Return only Python code without markdown syntax or comments."
+  user: >
+    Save the data to a variable called '_strategy_data'. 
+    Here are the companies to return data for: {tickers}. 
+    And here is the full prompt: {data_prompt}.
+    Use tqdm to show the progress of the data being loaded.
+    Return a dataframe with a column for each ticker's close price.
+
+pandas_code_generate:
+  system: "You are a data analyst and Python pandas expert. Generate concise, efficient pandas code to filter the dataframe. Return only the code, no markdown or comments."
+  user: >
+    Available columns: {columns}
+    DataFrame: self._ticker_data
+    Task: {data_prompt}
+    Generate pandas code to filter the dataframe based on the task. Never filter by date or datetime.
