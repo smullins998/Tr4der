@@ -7,7 +7,6 @@ from typing import Dict, Any
 import os
 from tqdm import tqdm
 from tr4der.utils.data_loader import DataLoader
-from tr4der.utils.gpt_helper import GptHelper
 
 
 
@@ -24,9 +23,7 @@ class Tr4der:
         self._data_loader = DataLoader(data_prompt)
         self._data_loader.load_data()
         
-    @property
-    def strategy_data(self):
-        return self._data_loader.strategy_data
+        
 
         
 

@@ -14,3 +14,20 @@ pandas_code_generate:
     DataFrame: self._ticker_data
     Task: {data_prompt}
     Generate pandas code to filter the dataframe based on the task. Never filter by date or datetime.
+
+
+strategy_identifier:
+  system: "You are a quantitative analyst. You are given a prompt. You need to identify the type of strategy that the user is looking for. Return only the strategy identifier, no markdown or comments."
+  user: >
+    Return the strategy that matches that of the prompt. If there is no match, return 'other'. Do not infer the strategy, make sure there is almost a direct match.
+    Here are the strategies: {trading_methods}. 
+    Here is the prompt: [{data_prompt}]
+    
+strategy_call:
+  system: "You are a quantitative analyst. You are given a prompt and a strategy definition. You need to call the strategy with the correct arguments and parameters. Return only the code, no markdown or comments."
+  user: >
+    Return the code to call the strategy with the correct arguments and parameters. The dataframe is called self._strategy_data.
+    Here is the prompt: [{data_prompt}]
+    Here is the class to call: [{strategy_definition}]
+    Here are the arguments and parameters: [{args}]
+    Do not call self.method(), use the class name instead.
