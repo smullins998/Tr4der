@@ -32,7 +32,7 @@ class DataLoader:
         return self._strategy_data
 
     
-    def load_data(self) -> None:
+    def execute_code(self) -> None:
         self._gpt_helper.execute_code()
         self._strategy_data = self._gpt_helper.strategy_data
         

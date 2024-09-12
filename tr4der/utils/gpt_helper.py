@@ -47,6 +47,7 @@ class GptHelper:
             tickers=self._filtered_data['ticker'].tolist(),
             data_prompt=self._data_prompt
         )
+        print(self._gpt_code)
     
     def _gpt_code_execute(self) -> Dict[str, Any]:
         namespace: Dict[str, Any] = {"yf": yf, "DataFrame": DataFrame, "date": date, 'self': self}
@@ -55,11 +56,19 @@ class GptHelper:
             print('Loading data...')
             exec(self._gpt_code, namespace)
             self._strategy_data = namespace.get('_strategy_data')
-            print(self._strategy_data)
+            # Check if 'Date' is in the index, if not set it as the index
+            if isinstance(self._strategy_data, DataFrame):
+                if 'Date' not in self._strategy_data.index.names:
+                    if 'Date' in self._strategy_data.columns:
+                        self._strategy_data.set_index('Date', inplace=True)
+                    else:
+                        print("Warning: 'Date' column not found in the DataFrame.")
+            else:
+                print("Warning: _strategy_data is not a DataFrame.")
         except Exception as e:
             raise RuntimeError(f"Error executing GPT response: {str(e)}")
         
-        return namespace.get('_strategy_data')
+        return self._strategy_data
     
     @_api_key_validation
     def _pandas_code_generate(self, data_prompt: str) -> str:
@@ -67,6 +76,7 @@ class GptHelper:
             columns=', '.join(self._ticker_data.columns),
             data_prompt=self._data_prompt
         )
+        print(self._pandas_code)
         return self._pandas_code
 
     def _pandas_code_execute(self) -> None:
@@ -80,7 +90,7 @@ class GptHelper:
 
     @_api_key_validation
     def _gpt_identify_strategy(self) -> str:
-        from ..trades import SimpleTrades
+        from ..simple_trades import SimpleTrades
 
         self._trading_methods = [method for method in dir(SimpleTrades) if callable(getattr(SimpleTrades, method)) and not (method.startswith('__') and method.endswith('__'))] + ['other']
         
@@ -96,15 +106,14 @@ class GptHelper:
             model=open_ai_model,
             messages=messages
         )
-        # print(messages)
-        # print(response)
+
         self._strategy_identifier = response.choices[0].message.content
         if self._strategy_identifier == 'other':
             raise ValueError("Strategy not found. Please reference the list of strategies and try again, or use custom strategy input.")
 
     @_api_key_validation
     def _gpt_call_strategy(self) -> str:
-        from ..trades import SimpleTrades
+        from ..simple_trades import SimpleTrades
         import inspect  # Import inspect module
     
         
@@ -127,12 +136,12 @@ class GptHelper:
         )
         self._strategy_function_call = response.choices[0].message.content
         
-        print(messages)
-        print(self._strategy_function_call)
+        # print(messages)
+        # print(self._strategy_function_call)
     
     
     def _gpt_call_strategy_execute(self) -> None:
-        from ..trades import SimpleTrades
+        from ..simple_trades import SimpleTrades
         
         #Call the strategy
         namespace: Dict[str, Any] = {

@@ -21,10 +21,12 @@ class Tr4der:
     def __init__(self, data_prompt: str):
         #Load the data
         self._data_loader = DataLoader(data_prompt)
-        self._data_loader.load_data()
+        self._data_loader.execute_code()
         
         
-
+    @property
+    def strategy_data(self) -> DataFrame:
+        return self._data_loader.strategy_data
         
 
 
