@@ -136,8 +136,8 @@ class GptHelper:
         )
         self._strategy_function_call = response.choices[0].message.content
         
-        # print(messages)
-        # print(self._strategy_function_call)
+        print(messages)
+        print(self._strategy_function_call)
     
     
     def _gpt_call_strategy_execute(self) -> None:

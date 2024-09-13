@@ -23,8 +23,8 @@ def plot_results(df: pd.DataFrame, stats: dict) -> None:
     plt.style.use('seaborn-v0_8-whitegrid')
 
     # Plot Cumulative Return as area
-    plt.fill_between(df['Date'], df['Cumulative_Return'], 1, alpha=0.3, color='#1e90ff', label='Cumulative Return')
-    plt.plot(df['Date'], df['Cumulative_Return'], color='#1e90ff', linewidth=2)
+    plt.fill_between(df['Date'], df['Cumulative_Return'] - 1, 0, alpha=0.3, color='#1e90ff', label='Cumulative Return')
+    plt.plot(df['Date'], df['Cumulative_Return'] - 1, color='#1e90ff', linewidth=2)
 
     # Calculate and plot cumulative returns for individual stocks
     for column in df.columns:
