@@ -33,18 +33,6 @@ def plot_results(df: pd.DataFrame, stats: dict) -> None:
             cumulative_return = (1 + df[column]).cumprod() - 1
             plt.plot(df['Date'], cumulative_return, label=f'{stock_name} Cumulative', linewidth=1.5)
 
-    # # Iterate through columns to find buy and sell signals for each stock
-    # for column in df.columns:
-    #     if column.endswith('_action'):
-    #         stock_name = column.replace('_action', '')
-    #         buy_signals = df[df[column] == 'buy']
-    #         sell_signals = df[df[column] == 'sell']
-            
-    #         # Plot buy and sell signals for each stock
-    #         plt.scatter(buy_signals['Date'], df.loc[buy_signals.index, stock_name], 
-    #                     marker='^', color='g', label=f'Buy {stock_name}')
-    #         plt.scatter(sell_signals['Date'], df.loc[sell_signals.index, stock_name], 
-    #                     marker='v', color='r', label=f'Sell {stock_name}')
 
     plt.title('Trading Strategy Results', fontsize=16)
     plt.xlabel('Date', fontsize=12)
