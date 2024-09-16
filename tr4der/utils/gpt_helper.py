@@ -90,10 +90,19 @@ class GptHelper:
 
     @_api_key_validation
     def _gpt_identify_strategy(self) -> str:
-        from ..simple_trades import SimpleTrades
+        from ..strategies.simple_strategies import SimpleStrategies
+        from ..strategies.technical_analysis_strategies import TechnicalAnalysisStrategies
 
-        self._trading_methods = [method for method in dir(SimpleTrades) if callable(getattr(SimpleTrades, method)) and not (method.startswith('__') and method.endswith('__'))] + ['other']
-        
+        strategy_classes = [SimpleStrategies, TechnicalAnalysisStrategies]
+        self._trading_methods = []
+
+        for cls in strategy_classes:
+            self._trading_methods.extend([
+                method for method in dir(cls)
+                if callable(getattr(cls, method)) and not method.startswith('__')
+            ])
+        self._trading_methods.append('other')
+
         messages = [
             {"role": "system", "content": self._prompts['strategy_identifier']['system']},
             {"role": "user", "content": self._prompts['strategy_identifier']['user'].format(
@@ -111,22 +120,39 @@ class GptHelper:
         if self._strategy_identifier == 'other':
             raise ValueError("Strategy not found. Please reference the list of strategies and try again, or use custom strategy input.")
 
+        return self._strategy_identifier
+
     @_api_key_validation
     def _gpt_call_strategy(self) -> str:
-        from ..simple_trades import SimpleTrades
-        import inspect  # Import inspect module
-    
-        
-        strategy_method = getattr(SimpleTrades, self._strategy_identifier)
+        from ..strategies.simple_strategies import SimpleStrategies
+        from ..strategies.technical_analysis_strategies import TechnicalAnalysisStrategies
+        import inspect
+
+        # Get attributes from multiple classes
+        classes_to_inspect = [SimpleStrategies, TechnicalAnalysisStrategies]
+        all_methods = {}
+
+        for cls in classes_to_inspect:
+            methods = {
+                method: getattr(cls, method)
+                for method in dir(cls)
+                if callable(getattr(cls, method)) and not method.startswith('__')
+            }
+            all_methods.update(methods)
+
+        strategy_method = all_methods.get(self._strategy_identifier)
+        if not strategy_method:
+            raise ValueError(f"Strategy '{self._strategy_identifier}' not found in any of the classes.")
+
         signature = inspect.signature(strategy_method)
-        args = signature.parameters  # Get the parameters of the method
+        args = signature.parameters
 
         messages = [
             {"role": "system", "content": self._prompts['strategy_call']['system']},
             {"role": "user", "content": self._prompts['strategy_call']['user'].format(
                 data_prompt=self._data_prompt,
                 strategy_definition=strategy_method,
-                args=args  # Include args in the message
+                args=args
             )}
         ]
 
@@ -135,19 +161,20 @@ class GptHelper:
             messages=messages
         )
         self._strategy_function_call = response.choices[0].message.content
-        
+
         print(messages)
         print(self._strategy_function_call)
     
     
     def _gpt_call_strategy_execute(self) -> None:
-        from ..simple_trades import SimpleTrades
-        
+        from ..strategies.simple_strategies import SimpleStrategies
+        from ..strategies.technical_analysis_strategies import TechnicalAnalysisStrategies
         #Call the strategy
         namespace: Dict[str, Any] = {
             "pd": pd, 
             "self": self, 
-            "SimpleTrades": SimpleTrades,
+            "SimpleStrategies": SimpleStrategies,
+            "TechnicalAnalysisStrategies": TechnicalAnalysisStrategies,
             "yf": yf,
             "DataFrame": DataFrame,
             "date": date

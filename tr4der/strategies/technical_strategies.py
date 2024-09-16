@@ -7,105 +7,15 @@ from tr4der.utils.metrics import calculate_metrics
 from tr4der.utils.plot import plot_results
 
 
-class SimpleTrades:
+class TechnicalAnalysisStrategies:
     
     def __init__(self):
         pass
 
     def __str__(self):
-        return f"Object to experiment with different trades"
+        return f"Object to experiment with different technical trades"
         
-    @staticmethod
-    def long(df: DataFrame = None) -> None:
 
-        original_len_cols = len(df.columns) # Save the original length of the columns
-        
-        # Calculate returns for long only strategy
-        for stock in df.columns:
-            df[f'{stock}_return'] = df[stock].pct_change()
-        
-        # Use mean instead of sum for Total_Return
-        df['Total_Return'] = df[[col for col in df.columns if 'return' in col]].mean(axis=1)
-        df['Cumulative_Return'] = (1 + df['Total_Return']).cumprod()
-        df['Drawdown'] = (df['Cumulative_Return'] / df['Cumulative_Return'].cummax()) - 1
-
-        # Add action column
-        for stock in df.columns[:original_len_cols]:
-            df[f'{stock}_action'] = 0
-            df.loc[df.index[0], f'{stock}_action'] = 'buy'
-            df.loc[df.index[-1], f'{stock}_action'] = 'sell'
-    
-        # Get output
-        metrics = calculate_metrics(df, 'long')
-        plot_results(df, metrics)
-
-
-
-    @staticmethod
-    def short(df: DataFrame) -> None:
-        
-        original_len_cols = len(df.columns) # Save the original length of the columns
-        
-        # Calculate returns for short only strategy
-        for stock in df.columns:
-            df[f'{stock}_return'] = -1 * df[stock].pct_change()
-        
-        # Use mean instead of sum for Total_Return
-        df['Total_Return'] = df[[col for col in df.columns if 'return' in col]].mean(axis=1)
-        df['Cumulative_Return'] = (1 + df['Total_Return']).cumprod()
-        df['Drawdown'] = (df['Cumulative_Return'] / df['Cumulative_Return'].cummax()) - 1
-
-        # Add action column
-        for stock in df.columns[:original_len_cols]:
-            df[f'{stock}_action'] = 0
-            df.loc[df.index[0], f'{stock}_action'] = 'sell'
-            df.loc[df.index[-1], f'{stock}_action'] = 'buy'
-    
-        # Get output
-        metrics = calculate_metrics(df, 'short')
-        plot_results(df, metrics)
-    
-    
-    
-    
-    @staticmethod
-    def long_short(df: DataFrame = None, 
-                   long_tickers: Optional[List[str]] = None, 
-                   short_tickers: Optional[List[str]] = None,
-                   ) -> None:
-                
-        original_len_cols = len(df.columns) # Save the original length of the columns
-
-        # Calculate returns for short only strategy
-        for stock in df.columns:
-            if stock in long_tickers:
-                df[f'{stock}_return'] = df[stock].pct_change()
-            elif stock in short_tickers:
-                df[f'{stock}_return'] = -1 * (df[stock].pct_change())
-            else:
-                df[f'{stock}_return'] = 0
-                 
-        # Use mean instead of sum for Total_Return
-        df['Total_Return'] = df[[col for col in df.columns if 'return' in col]].mean(axis=1)
-        df['Cumulative_Return'] = (1 + df['Total_Return']).cumprod()
-        df['Drawdown'] = (df['Cumulative_Return'] / df['Cumulative_Return'].cummax()) - 1
-
-        # Add action column
-        for stock in df.columns[:original_len_cols]:
-            df[f'{stock}_action'] = 0
-            if stock in long_tickers:
-                df.loc[df.index[0], f'{stock}_action'] = 'buy'
-                df.loc[df.index[-1], f'{stock}_action'] = 'sell'
-            elif stock in short_tickers:
-                df.loc[df.index[0], f'{stock}_action'] = 'sell'
-                df.loc[df.index[-1], f'{stock}_action'] = 'buy'
-
-        # Get output
-        metrics = calculate_metrics(df, 'pair_trade')
-        plot_results(df, metrics)
-    
-    
-    
     @staticmethod
     def mean_reversion(df: DataFrame = None) -> None:
         
@@ -183,7 +93,48 @@ class SimpleTrades:
      
         
     
-    def momentum(df: DataFrame = None) -> None:
-        pass
-
+    @staticmethod
+    def momentum(df: DataFrame = None, window: int = 5) -> None:
+        original_len_cols = len(df.columns)
         
+        for stock in df.columns[:original_len_cols]:
+            df[f'{stock}_return'] = df[stock].pct_change()
+            df[f'{stock}_momentum'] = df[f'{stock}_return'].rolling(window=window).mean()
+            df[f'{stock}_position'] = np.where(df[f'{stock}_momentum'].isna(), 0, 
+                                               np.where(df[f'{stock}_momentum'] > 0, 1, -1))
+            df[f'{stock}_strategy'] = df[f'{stock}_position'].shift(1) * df[f'{stock}_return']
+        
+        # Calculate total return across all stocks
+        df['Total_Return'] = df[[col for col in df.columns if col.endswith('_strategy')]].mean(axis=1)
+        df['Cumulative_Return'] = (1 + df['Total_Return']).cumprod()
+        df['Drawdown'] = (df['Cumulative_Return'] / df['Cumulative_Return'].cummax()) - 1
+        
+        # Get output
+        metrics = calculate_metrics(df, 'momentum')
+        plot_results(df, metrics)
+        
+
+    
+    @staticmethod
+    def bollinger_bands(df: DataFrame = None, window: int = 20, num_std: int = 2) -> None:
+        
+        for stock in df.columns:
+            df[f'{stock}_return'] = df[stock].pct_change()
+            df[f'{stock}_ma'] = df[stock].rolling(window=window).mean()
+            df[f'{stock}_std'] = df[stock].rolling(window=window).std()
+            df[f'{stock}_upper_band'] = df[f'{stock}_ma'] + (num_std * df[f'{stock}_std'])
+            df[f'{stock}_lower_band'] = df[f'{stock}_ma'] - (num_std * df[f'{stock}_std'])
+            df[f'{stock}_position'] = np.where(df[stock].isna(), np.nan, 
+                                               np.where(df[stock] > df[f'{stock}_upper_band'], -1, 
+                                                         np.where(df[stock] < df[f'{stock}_lower_band'], 1, np.nan)))   
+            df[f'{stock}_position'] = df[f'{stock}_position'].ffill()
+            df[f'{stock}_strategy'] = df[f'{stock}_position'].shift(1) * df[f'{stock}_return']
+            
+        df['Total_Return'] = df[[col for col in df.columns if col.endswith('_strategy')]].mean(axis=1)
+        df['Cumulative_Return'] = (1 + df['Total_Return']).cumprod()
+        df['Drawdown'] = (df['Cumulative_Return'] / df['Cumulative_Return'].cummax()) - 1
+        
+        # Get output
+        metrics = calculate_metrics(df, 'BollingerBands')
+        plot_results(df, metrics)
+    
