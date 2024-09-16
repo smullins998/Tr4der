@@ -31,10 +31,20 @@ def plot_results(df: pd.DataFrame, stats: dict) -> None:
         if column.endswith('_return') and column != 'Total_Return':
             stock_name = column.split('_')[0]
             cumulative_return = (1 + df[column]).cumprod() - 1
-            plt.plot(df['Date'], cumulative_return, label=f'{stock_name} Cumulative', linewidth=1.5)
+            line, = plt.plot(df['Date'], cumulative_return, label=f'{stock_name} Cumulative', linewidth=1.5)
+            
+            # Plot buy and sell signals
+            signal_column = f'{stock_name}_signal'
+            if signal_column in df.columns:
+                buy_mask = df[signal_column] == "Buy"
+                sell_mask = df[signal_column] == "Sell"
+                
+                plt.scatter(df.loc[buy_mask, 'Date'], cumulative_return.loc[buy_mask], 
+                            marker='^', color='g', s=100, label=f'{stock_name} Buy' if stock_name == df.columns[0].split('_')[0] else "")
+                plt.scatter(df.loc[sell_mask, 'Date'], cumulative_return.loc[sell_mask], 
+                            marker='v', color='r', s=100, label=f'{stock_name} Sell' if stock_name == df.columns[0].split('_')[0] else "")
 
-
-    plt.title('Trading Strategy Results', fontsize=16)
+    plt.title(stats['strategy'], fontsize=16)
     plt.xlabel('Date', fontsize=12)
     plt.ylabel('Return', fontsize=12)
     plt.legend(loc='upper left')

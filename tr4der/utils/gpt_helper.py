@@ -91,7 +91,7 @@ class GptHelper:
     @_api_key_validation
     def _gpt_identify_strategy(self) -> str:
         from ..strategies.simple_strategies import SimpleStrategies
-        from ..strategies.technical_analysis_strategies import TechnicalAnalysisStrategies
+        from ..strategies.technical_strategies import TechnicalAnalysisStrategies
 
         strategy_classes = [SimpleStrategies, TechnicalAnalysisStrategies]
         self._trading_methods = []
@@ -125,7 +125,7 @@ class GptHelper:
     @_api_key_validation
     def _gpt_call_strategy(self) -> str:
         from ..strategies.simple_strategies import SimpleStrategies
-        from ..strategies.technical_analysis_strategies import TechnicalAnalysisStrategies
+        from ..strategies.technical_strategies import TechnicalAnalysisStrategies
         import inspect
 
         # Get attributes from multiple classes
@@ -168,7 +168,7 @@ class GptHelper:
     
     def _gpt_call_strategy_execute(self) -> None:
         from ..strategies.simple_strategies import SimpleStrategies
-        from ..strategies.technical_analysis_strategies import TechnicalAnalysisStrategies
+        from ..strategies.technical_strategies import TechnicalAnalysisStrategies
         #Call the strategy
         namespace: Dict[str, Any] = {
             "pd": pd, 

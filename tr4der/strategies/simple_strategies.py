@@ -30,11 +30,11 @@ class SimpleStrategies:
         df['Cumulative_Return'] = (1 + df['Total_Return']).cumprod()
         df['Drawdown'] = (df['Cumulative_Return'] / df['Cumulative_Return'].cummax()) - 1
 
-        # Add action column
+        # Add signal column
         for stock in df.columns[:original_len_cols]:
-            df[f'{stock}_action'] = 0
-            df.loc[df.index[0], f'{stock}_action'] = 'buy'
-            df.loc[df.index[-1], f'{stock}_action'] = 'sell'
+            df[f'{stock}_signal'] = 0
+            df.loc[df.index[0], f'{stock}_signal'] = 'Buy'
+            df.loc[df.index[-1], f'{stock}_signal'] = 'Sell'
     
         # Get output
         metrics = calculate_metrics(df, 'long')
@@ -56,11 +56,11 @@ class SimpleStrategies:
         df['Cumulative_Return'] = (1 + df['Total_Return']).cumprod()
         df['Drawdown'] = (df['Cumulative_Return'] / df['Cumulative_Return'].cummax()) - 1
 
-        # Add action column
+        # Add signal column
         for stock in df.columns[:original_len_cols]:
-            df[f'{stock}_action'] = 0
-            df.loc[df.index[0], f'{stock}_action'] = 'sell'
-            df.loc[df.index[-1], f'{stock}_action'] = 'buy'
+            df[f'{stock}_signal'] = 0
+            df.loc[df.index[0], f'{stock}_signal'] = 'Sell'
+            df.loc[df.index[-1], f'{stock}_signal'] = 'Buy'
     
         # Get output
         metrics = calculate_metrics(df, 'short')
@@ -91,15 +91,15 @@ class SimpleStrategies:
         df['Cumulative_Return'] = (1 + df['Total_Return']).cumprod()
         df['Drawdown'] = (df['Cumulative_Return'] / df['Cumulative_Return'].cummax()) - 1
 
-        # Add action column
+        # Add signal column
         for stock in df.columns[:original_len_cols]:
-            df[f'{stock}_action'] = 0
+            df[f'{stock}_signal'] = 0
             if stock in long_tickers:
-                df.loc[df.index[0], f'{stock}_action'] = 'buy'
-                df.loc[df.index[-1], f'{stock}_action'] = 'sell'
+                df.loc[df.index[0], f'{stock}_signal'] = 'Buy'
+                df.loc[df.index[-1], f'{stock}_signal'] = 'Sell'
             elif stock in short_tickers:
-                df.loc[df.index[0], f'{stock}_action'] = 'sell'
-                df.loc[df.index[-1], f'{stock}_action'] = 'buy'
+                df.loc[df.index[0], f'{stock}_signal'] = 'Sell'
+                df.loc[df.index[-1], f'{stock}_signal'] = 'Buy'
 
         # Get output
         metrics = calculate_metrics(df, 'pair_trade')

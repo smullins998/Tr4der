@@ -39,10 +39,16 @@ class TechnicalAnalysisStrategies:
             df.loc[df[f'{stock}_ratio'] > short, f'{stock}_position'] = -1
             df.loc[df[f'{stock}_ratio'] < long, f'{stock}_position'] = 1
             df[f'{stock}_position'] = df[f'{stock}_position'].fillna(method='ffill') # We will always be in or out of a position.
-            df[f'{stock}_strategy_return'] = df[f'{stock}_position'].shift() * df[f'{stock}_return']
+            df[f'{stock}_strategy'] = df[f'{stock}_position'].shift() * df[f'{stock}_return']
+
+            # Add buy and sell signals only when position changes
+            df[f'{stock}_signal'] = np.where(df[f'{stock}_position'] != df[f'{stock}_position'].shift(), 
+                                             np.where(df[f'{stock}_position'] == 1, 'Buy', 
+                                                      np.where(df[f'{stock}_position'] == -1, 'Sell', None)),
+                                             None)
 
         # Calculate total return across all stocks
-        df['Total_Return'] = df[[col for col in df.columns if col.endswith('_strategy_return')]].mean(axis=1)
+        df['Total_Return'] = df[[col for col in df.columns if col.endswith('_strategy')]].mean(axis=1)
         df['Cumulative_Return'] = (1 + df['Total_Return']).cumprod()
         df['Drawdown'] = (df['Cumulative_Return'] / df['Cumulative_Return'].cummax()) - 1
 
@@ -72,7 +78,13 @@ class TechnicalAnalysisStrategies:
         df[f'{first_stock}_{second_stock}_spread_ma'] = df[f'{first_stock}_{second_stock}_spread'].rolling(window=20).mean()
         df[f'{first_stock}_{second_stock}_spread_zscore'] = (df[f'{first_stock}_{second_stock}_spread'] - df[f'{first_stock}_{second_stock}_spread_ma']) / df[f'{first_stock}_{second_stock}_spread'].rolling(window=20).std()
 
-    
+        # Add buy and sell signals only when position changes
+        for stock in [first_stock, second_stock]:
+            df[f'{stock}_signal'] = np.where(df[f'{stock}_signal'] != df[f'{stock}_signal'].shift(), 
+                                             np.where(df[f'{stock}_signal'] == 1, 'Buy', 
+                                                      np.where(df[f'{stock}_signal'] == -1, 'Sell', None)),
+                                             None)
+
         # Generate signals
         df[f'{first_stock}_signal'] = np.where(df[f'{first_stock}_{second_stock}_spread_zscore'] > 1, -1, 
                                       np.where(df[f'{first_stock}_{second_stock}_spread_zscore'] < -1, 1, np.nan))
@@ -103,7 +115,13 @@ class TechnicalAnalysisStrategies:
             df[f'{stock}_position'] = np.where(df[f'{stock}_momentum'].isna(), 0, 
                                                np.where(df[f'{stock}_momentum'] > 0, 1, -1))
             df[f'{stock}_strategy'] = df[f'{stock}_position'].shift(1) * df[f'{stock}_return']
-        
+
+            # Add buy and sell signals only when position changes
+            df[f'{stock}_signal'] = np.where(df[f'{stock}_position'] != df[f'{stock}_position'].shift(), 
+                                             np.where(df[f'{stock}_position'] == 1, 'Buy', 
+                                                      np.where(df[f'{stock}_position'] == -1, 'Sell', None)),
+                                             None)
+
         # Calculate total return across all stocks
         df['Total_Return'] = df[[col for col in df.columns if col.endswith('_strategy')]].mean(axis=1)
         df['Cumulative_Return'] = (1 + df['Total_Return']).cumprod()
@@ -129,7 +147,13 @@ class TechnicalAnalysisStrategies:
                                                          np.where(df[stock] < df[f'{stock}_lower_band'], 1, np.nan)))   
             df[f'{stock}_position'] = df[f'{stock}_position'].ffill()
             df[f'{stock}_strategy'] = df[f'{stock}_position'].shift(1) * df[f'{stock}_return']
-            
+
+            # Add buy and sell signals only when position changes
+            df[f'{stock}_signal'] = np.where(df[f'{stock}_position'] != df[f'{stock}_position'].shift(), 
+                                             np.where(df[f'{stock}_position'] == 1, 'Buy', 
+                                                      np.where(df[f'{stock}_position'] == -1, 'Sell', None)),
+                                             None)
+
         df['Total_Return'] = df[[col for col in df.columns if col.endswith('_strategy')]].mean(axis=1)
         df['Cumulative_Return'] = (1 + df['Total_Return']).cumprod()
         df['Drawdown'] = (df['Cumulative_Return'] / df['Cumulative_Return'].cummax()) - 1
@@ -137,4 +161,3 @@ class TechnicalAnalysisStrategies:
         # Get output
         metrics = calculate_metrics(df, 'BollingerBands')
         plot_results(df, metrics)
-    
