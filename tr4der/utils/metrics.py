@@ -1,10 +1,8 @@
 import pandas as pd
 import numpy as np
 from typing import Dict, Any
-from colorama import Fore, Style, init
 import math
 
-init(autoreset=True)
 
 def calculate_metrics(df: pd.DataFrame, strategy: str) -> Dict[str, any]:
     metrics = {}        
@@ -49,13 +47,12 @@ def calculate_metrics(df: pd.DataFrame, strategy: str) -> Dict[str, any]:
     metrics['Avg. Drawdown Duration'] = drawdown_durations.mean()
     
     #Get number of trade-metrics                    
-    action_columns = [col for col in df.columns if col.endswith('_action')]
-    buy_count = (df[action_columns] == 'buy').sum().sum()
-    sell_count = (df[action_columns] == 'sell').sum().sum()
+    action_columns = [col for col in df.columns if col.endswith('_signal')]
+    buy_count = (df[action_columns] == 'Buy').sum().sum()
+    sell_count = (df[action_columns] == 'Sell').sum().sum()
   
     # Trade metrics
     metrics['# Trades'] = buy_count + sell_count
-    metrics['Win Rate [%]'] = round((df[action_columns] == 'buy').sum().sum() / metrics['# Trades'] * 100, 2)
     metrics['Best Day [%]'] = round(df['Total_Return'].max() * 100, 2)
     metrics['Worst Day [%]'] = round(df['Total_Return'].min() * 100, 2)
     metrics['Avg. Trade [%]'] = round(df['Total_Return'].mean() * 100, 2)

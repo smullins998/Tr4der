@@ -3,6 +3,7 @@ import pandas as pd
 
 # Method to transform the data into the correct types to handle
 def transform_data(df) -> None:
+    
 
     # Convert string columns
     string_columns = [
@@ -39,6 +40,12 @@ def transform_data(df) -> None:
         'freeCashflow', 'ebitda'
     ]
     df[float_columns] = df[float_columns].astype(float, errors='ignore')  # Convert with coercion for errors
+
+    # First filter out any rows with market cap below 100 million
+    # Results can be majorily impacted by microcaps
+    
+    df = df[df['marketCap'] > 100000000]
+
 
     # Convert epoch timestamps to datetime
     epoch_columns = [

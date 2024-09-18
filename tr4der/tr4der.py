@@ -11,8 +11,6 @@ from tr4der.strategies.simple_strategies import SimpleStrategies
 from tr4der.strategies.technical_strategies import TechnicalAnalysisStrategies
 from tr4der.strategies.machine_learning_strategies import MachineLearningStrategies
 
-
-
 #I think eventually I want to add support for options data and historicals. 
 #This should be with the yf api. Or maybe we use Optionistics. There has to be a way.
 
