@@ -119,8 +119,15 @@ A plot of the strategy will appear in your console.
 
 ### Regression Strategy
 - **Method**: `regression_strategy(df)`
-- **Description**: Implements a basic regression on previous n days returns.
+- **Description**: Implements a basic regression on previous n days returns (n=5).
 - **Signals**: Buy when the current day's return is greater than the predicted return, sell when it is less.
+
+### K-Means Clustering
+- **Method**: `kmeans_clustering(df)`
+- **Description**: Implements a basic k-means clustering strategy.
+- **Signals**: Assigns a cluster label to each data point based on its similarity to predefined centroids.
+
+## Modifying Strategies
 
 ## Modifying Strategies
 

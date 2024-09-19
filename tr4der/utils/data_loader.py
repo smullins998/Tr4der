@@ -3,7 +3,6 @@ import yfinance as yf
 import openai
 import ast
 
-
 from .type_transformation import transform_data
 from .gpt_helper import GptHelper
 
@@ -30,7 +29,6 @@ class DataLoader:
     @property
     def strategy_data(self):
         return self._strategy_data
-
     
     def execute_code(self) -> None:
         self._gpt_helper.execute_code()

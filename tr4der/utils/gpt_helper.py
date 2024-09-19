@@ -92,8 +92,9 @@ class GptHelper:
     def _gpt_identify_strategy(self) -> str:
         from ..strategies.simple_strategies import SimpleStrategies
         from ..strategies.technical_strategies import TechnicalAnalysisStrategies
+        from ..strategies.machine_learning_strategies import MachineLearningStrategies
 
-        strategy_classes = [SimpleStrategies, TechnicalAnalysisStrategies]
+        strategy_classes = [SimpleStrategies, TechnicalAnalysisStrategies, MachineLearningStrategies]
         self._trading_methods = []
 
         for cls in strategy_classes:
@@ -126,10 +127,11 @@ class GptHelper:
     def _gpt_call_strategy(self) -> str:
         from ..strategies.simple_strategies import SimpleStrategies
         from ..strategies.technical_strategies import TechnicalAnalysisStrategies
+        from ..strategies.machine_learning_strategies import MachineLearningStrategies
         import inspect
 
         # Get attributes from multiple classes
-        classes_to_inspect = [SimpleStrategies, TechnicalAnalysisStrategies]
+        classes_to_inspect = [SimpleStrategies, TechnicalAnalysisStrategies, MachineLearningStrategies]
         all_methods = {}
 
         for cls in classes_to_inspect:
@@ -169,12 +171,14 @@ class GptHelper:
     def _gpt_call_strategy_execute(self) -> None:
         from ..strategies.simple_strategies import SimpleStrategies
         from ..strategies.technical_strategies import TechnicalAnalysisStrategies
+        from ..strategies.machine_learning_strategies import MachineLearningStrategies
         #Call the strategy
         namespace: Dict[str, Any] = {
             "pd": pd, 
             "self": self, 
             "SimpleStrategies": SimpleStrategies,
             "TechnicalAnalysisStrategies": TechnicalAnalysisStrategies,
+            "MachineLearningStrategies": MachineLearningStrategies,
             "yf": yf,
             "DataFrame": DataFrame,
             "date": date
