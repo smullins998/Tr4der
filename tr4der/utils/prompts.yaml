@@ -43,4 +43,4 @@ strategy_call:
     Here is the class to call: [{strategy_definition}]
     Here are the arguments and parameters: [{args}]
     Use uppercase for tickers.
-    The call should look like this: class_name.your_strategy(df=self._strategy_data, *args, **kwargs)
+    The call should look like this: class_name.your_strategy(df=self._strategy_data, *args, **kwargs) where the class_name is the name of the class and the your_strategy is the name of the strategy.

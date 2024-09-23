@@ -141,7 +141,7 @@ class GptHelper:
                 if callable(getattr(cls, method)) and not method.startswith('__')
             }
             all_methods.update(methods)
-
+        print(all_methods)
         strategy_method = all_methods.get(self._strategy_identifier)
         if not strategy_method:
             raise ValueError(f"Strategy '{self._strategy_identifier}' not found in any of the classes.")

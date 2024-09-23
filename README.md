@@ -78,56 +78,66 @@ A plot of the strategy will appear in your console.
 **Please** recognize there are many ways to implement these strategies and results can vary significantly; Reference the code for exact implementation details.
 
 
-### Long Only
-- **Method**: `long(df)`
-- **Description**: Go long on specified tickers.
+### Simple Strategies
+- **Long Only**
+  - **Method**: `long(df)`
+  - **Description**: Go long on specified tickers.
 
-### Short Only
-- **Method**: `short(df)`
-- **Description**: Go short on specified tickers.
+- **Short Only**
+  - **Method**: `short(df)`
+  - **Description**: Go short on specified tickers.
 
-### Long Short
-- **Method**: `long_short(df, long_tickers, short_tickers)`
-- **Description**: Go long on specified tickers and short on others.
+- **Long Short**
+  - **Method**: `long_short(df, long_tickers, short_tickers)`
+  - **Description**: Go long on specified tickers and short on others.
 
+### Technical Strategies
+- **Momentum Strategy**
+  - **Method**: `momentum_strategy(df, window=5)`
+  - **Description**: Calculates momentum based on the rolling mean of returns over a specified window.
+  - **Signals**: Buy when momentum is positive, sell when negative.
 
-### Momentum Strategy
-- **Method**: `momentum_strategy(df, window=5)`
-- **Description**: Calculates momentum based on the rolling mean of returns over a specified window.
-- **Signals**: Buy when momentum is positive, sell when negative.
+- **MACD Trend Following**
+  - **Method**: `macd_trend_following(df, fast_window=12, slow_window=26, signal_window=9)`
+  - **Description**: Uses the Moving Average Convergence Divergence (MACD) indicator for trend following.
+  - **Signals**: Buy when MACD line crosses above the signal line, sell when it crosses below.
 
-### MACD Trend Following
-- **Method**: `macd_trend_following(df, fast_window=12, slow_window=26, signal_window=9)`
-- **Description**: Uses the Moving Average Convergence Divergence (MACD) indicator for trend following.
-- **Signals**: Buy when MACD line crosses above the signal line, sell when it crosses below.
+- **Moving Average Mean Reversion**
+  - **Method**: `mean_reversion_moving_average(df)`
+  - **Description**: Uses a moving average approach for stationary mean reversion.
+  - **Signals**: Buy when price falls below a certain ratio of its moving average, sell when it rises above.
 
+- **Bollinger Bands Mean Reversion**
+  - **Method**: `mean_reversion_bollinger_bands(df, window=20, num_std=2)`
+  - **Description**: Uses Bollinger Bands for mean reversion trading.
+  - **Signals**: Buy when price touches the lower band, sell when it touches the upper band.
 
-### Moving Average Mean Reversion
-- **Method**: `mean_reversion_moving_average(df)`
-- **Description**: Uses a moving average approach for stationary mean reversion.
-- **Signals**: Buy when price falls below a certain ratio of its moving average, sell when it rises above.
+- **Pairs Trading**
+  - **Method**: `pairs_trading(df)`
+  - **Description**: Implements a basic pairs trading strategy using the price spread between two stocks.
+  - **Signals**: Buy one stock and sell the other when their price spread deviates significantly from its mean.
 
-### Bollinger Bands Mean Reversion
-- **Method**: `mean_reversion_bollinger_bands(df, window=20, num_std=2)`
-- **Description**: Uses Bollinger Bands for mean reversion trading.
-- **Signals**: Buy when price touches the lower band, sell when it touches the upper band.
+### Machine Learning Strategies
+- **Linear Regression Strategy**
+  - **Method**: `linear_regression(df)`
+  - **Description**: Implements a basic linear regression strategy on previous n days returns (n=5).
+  - **Signals**: Buy when the current day's return is greater than the predicted return, sell when it is less.
 
-### Pairs Trading
-- **Method**: `pairs_trading(df)`
-- **Description**: Implements a basic pairs trading strategy using the price spread between two stocks.
-- **Signals**: Buy one stock and sell the other when their price spread deviates significantly from its mean.
+- **SVM Regression**
+  - **Method**: `svm_regression(df)`
+  - **Description**: Implements a basic SVM regression strategy with multiple technical indicators: SMA_20, SMA_50, EMA_20, EMA_50, RSI_14, and Previous Day Return. You may modify the technical indicators used in the strategy.
+  - **Signals**: Buy when the predicted return is positive, sell when it is negative. We found a negative correlation between the predicted returns and the actual returns, so we **Sell** when the model predicts a **Buy**.
 
-### Regression Strategy
-- **Method**: `regression_strategy(df)`
-- **Description**: Implements a basic regression on previous n days returns (n=5).
-- **Signals**: Buy when the current day's return is greater than the predicted return, sell when it is less.
+- **Decision Tree Regression**
+  - **Method**: `decision_tree_regression(df)`
+  - **Description**: Implements a basic decision tree regression strategy with multiple technical indicators: SMA_20, SMA_50, EMA_20, EMA_50, RSI_14, and Previous Day Return. You may modify the technical indicators used in the strategy.
+  - **Signals**: Buy when the predicted return is positive, sell when it is negative. 
 
-### K-Means Clustering
-- **Method**: `kmeans_clustering(df)`
-- **Description**: Implements a basic k-means clustering strategy.
-- **Signals**: Assigns a cluster label to each data point based on its similarity to predefined centroids.
+- **Neural Network Regression**
+  - **Method**: `neural_network_regression(df)`
+  - **Description**: Implements a basic neural network regression strategy with multiple technical indicators: SMA_20, SMA_50, EMA_20, EMA_50, RSI_14, and Previous Day Return. You may modify the technical indicators used in the strategy.
+  - **Signals**: Buy when the predicted return is positive, sell when it is negative.
 
-## Modifying Strategies
 
 ## Modifying Strategies
 
