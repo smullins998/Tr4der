@@ -1,2 +1,0 @@
-1. I think we want to add the sp500 and see how the strategy outperforms the market.
-2. I think we want to add statistical significance testing versus the market returns to see if it is actually any good.

@@ -7,7 +7,7 @@ import pandas as pd
 import yaml
 import yfinance as yf
 from pandas import DataFrame
-from ..config import open_ai_model
+from .config import open_ai_model
 
 
 class GptHelper:

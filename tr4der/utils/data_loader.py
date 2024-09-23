@@ -7,7 +7,7 @@ from .type_transformation import transform_data
 from .gpt_helper import GptHelper
 
 try:
-    from ..config import openai_api_key
+    from .config import openai_api_key
 except ImportError:
     raise ImportError("OpenAI API key not found. Please set the OPENAI_API_KEY in the config file.")
  
