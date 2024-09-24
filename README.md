@@ -30,17 +30,18 @@ $ pip install tr4der
 
 ## Usage
 
-Examples of prompts:
+Examples of valid prompts:
 - "I want to pair trade UBER and LYFT over the past 5 years"
 - "Go long on the top 5 PE stocks in the Nasdaq"
 - "Short the bottom 3 PE stocks in the S&P 500"
-
+- "I want to use a K-nearest neighbors model to trade LYFT stock since their IPO to now"
+- "I want to use mean reversion with bollinger bands to trade GOOGL for the past 10 years"
 
 ```python
 import tr4der
 
 # Define the query
-query = "I want to use bollinger bands to trade GOOGL for the past 10 years"
+query = "I want to use mean reversion with bollinger bands to trade GOOGL for the past 10 years"
 
 # Pass the query to the Tr4der class
 trader = tr4der(query)
@@ -83,8 +84,8 @@ A plot of the strategy will appear in your console.
 
 **Most of these strategies are:**
 1. Custom implementations of simple strategies (buy & hold)
-2. Custom implementations with technical indicators (MACD, Bollinger Bands, etc)
-3. Custom implementations of machine learning fundamentals (linear regression, clustering, etc)
+2. Custom implementations of strategies with technical indicators (MACD, Bollinger Bands, etc)
+3. Custom implementations of strategies with machine learning models (linear regression, clustering, etc)
 
 **Please** recognize there are many ways to implement these strategies and results can vary significantly; Reference the code for exact implementation details.
 
@@ -144,9 +145,19 @@ A plot of the strategy will appear in your console.
   - **Description**: Implements a basic decision tree regression strategy with multiple technical indicators: SMA_20, SMA_50, EMA_20, EMA_50, RSI_14, and Previous Day Return. You may modify the technical indicators used in the strategy.
   - **Signals**: Buy when the predicted return is positive, sell when it is negative. 
 
+- **Nearest Neighbors Regression**
+  - **Method**: `nearest_neighbors_regression(df)`
+  - **Description**: Implements a basic nearest neighbors regression strategy with multiple technical indicators: SMA_20, SMA_50, EMA_20, EMA_50, RSI_14, and Previous Day Return. You may modify the technical indicators used in the strategy.
+  - **Signals**: Buy when the predicted return is positive, sell when it is negative.
+
 - **Neural Network Regression**
   - **Method**: `neural_network_regression(df)`
   - **Description**: Implements a basic neural network regression strategy with multiple technical indicators: SMA_20, SMA_50, EMA_20, EMA_50, RSI_14, and Previous Day Return. You may modify the technical indicators used in the strategy.
+  - **Signals**: Buy when the predicted return is positive, sell when it is negative.
+
+- **LSTM Regression**
+  - **Method**: `lstm_regression(df)`
+  - **Description**: Implements a basic LSTM regression strategy with multiple technical indicators: SMA_20, SMA_50, EMA_20, EMA_50, RSI_14, and Previous Day Return. You may modify the technical indicators used in the strategy.
   - **Signals**: Buy when the predicted return is positive, sell when it is negative.
 
 
@@ -167,8 +178,37 @@ strategy_data.head()
 | 2013-12-09 | 26.980480 | 0.007730     | 26.109810  | 27.064833        | 25.154786        | -1.0           |
 
 #Call strategy with modified parameters
-trader.bollinger_bands(strategy_data, window=21, num_std=2)
+trader.MachineLearningStrategies.nearest_neighbors_regression(strategy_data, technical_indicators=['SMA_20', 'SMA_50'])
 ```
+
+## Dependencies
+
+- Python 3.10+
+- OpenAI API
+- pandas
+- numpy
+- scikit-learn
+- tensorflow (for LSTM strategy)
+- matplotlib (for plotting)
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## Version
+
+Current version: 1.0.0
+
+## Contact
+
+Sean Mullins - [LinkedIn](https://www.linkedin.com/in/smullins998/) - [Email](mailto:smullins998@gmail.com) - [GitHub](https://github.com/smullins998/tr4der)
+
 
 ## Disclaimer
 

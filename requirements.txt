@@ -6,3 +6,4 @@ PyYAML
 seaborn
 ta
 yfinance
+tensorflow

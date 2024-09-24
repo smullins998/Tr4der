@@ -24,10 +24,10 @@ class MachineLearningStrategies:
     def __str__(self):
         return f"Object to experiment with different machine learning trades"
     
-    #Helper function to calculate technical indicators
     @classmethod
     def _calculate_technical_indicators(cls, ticker: str, df: DataFrame, technical_indicators: List = ['SMA_20', 'SMA_50', 'EMA_20', 'EMA_50', 'RSI_14']) -> DataFrame:
-        
+        ''' Helper function to calculate the technical indicators and the previous day return
+        '''
         # Calculate the return for the ticker
         df[f'{ticker}_return'] = df[ticker].pct_change()
         
@@ -52,7 +52,6 @@ class MachineLearningStrategies:
         df = df.dropna()
 
         return df
-    
     
     
     @staticmethod
@@ -253,6 +252,70 @@ class MachineLearningStrategies:
         plot_results(test_data, metrics)
         
     @staticmethod
-    def LSTM(df: DataFrame, technical_indicators: List = ['SMA_20', 'SMA_50', 'EMA_20', 'EMA_50', 'RSI_14']) -> None:
-        pass
+    def LSTM(df: DataFrame, technical_indicators: List = ['SMA_20', 'SMA_50', 'EMA_20', 'EMA_50', 'RSI_14'], 
+             sequence_length: int = 60, epochs: int = 25, batch_size: int = 32) -> None:
+        import tensorflow as tf
+        from sklearn.preprocessing import MinMaxScaler
+        import numpy as np
+
+        assert len(df.columns) == 1, "We only support one ticker for now"
+        
+        ticker = df.columns[0]
+        
+        # Calculate technical indicators
+        df = MachineLearningStrategies._calculate_technical_indicators(ticker, df, technical_indicators)
+        
+        # Prepare the data
+        features = df[technical_indicators + ['Previous_Day_Return']].values
+        target = df[ticker].values
+        
+        # Normalize the data
+        scaler_features = MinMaxScaler()
+        scaler_target = MinMaxScaler()
+        features_scaled = scaler_features.fit_transform(features)
+        target_scaled = scaler_target.fit_transform(target.reshape(-1, 1))
+        
+        # Create sequences
+        X, y = [], []
+        for i in range(len(features_scaled) - sequence_length):
+            X.append(features_scaled[i:(i + sequence_length)])
+            y.append(target_scaled[i + sequence_length])
+        X, y = np.array(X), np.array(y)
+        
+        # Split the data
+        train_size = int(len(X) * 0.7)
+        X_train, X_test = X[:train_size], X[train_size:]
+        y_train, y_test = y[:train_size], y[train_size:]
+        
+        # Build the LSTM model
+        model = tf.keras.Sequential([
+            tf.keras.layers.LSTM(50, activation='relu', input_shape=(X_train.shape[1], X_train.shape[2])),
+            tf.keras.layers.Dense(1)
+        ])
+        
+        model.compile(optimizer='adam', loss='mse')
+        
+        # Train the model
+        model.fit(X_train, y_train, epochs=epochs, batch_size=batch_size, validation_split=0.1, verbose=1)
+        
+        # Make predictions
+        predictions = model.predict(X_test)
+        predictions = scaler_target.inverse_transform(predictions)
+        y_test = scaler_target.inverse_transform(y_test)
+        
+        # Prepare results DataFrame
+        test_data = df.iloc[-len(y_test):].copy()
+        test_data['predictions'] = predictions
+        
+        # Add trading signals and calculate returns
+        test_data[f'{ticker}_signal'] = np.where(test_data['predictions'] > test_data[ticker].shift(1), 'Buy', 'Sell')
+        test_data[f'{ticker}_position'] = np.where(test_data[f'{ticker}_signal'] == 'Buy', 1, -1)
+        test_data[f'{ticker}_return'] = test_data[ticker].pct_change()
+        test_data[f'Total_Return'] = test_data[f'{ticker}_position'] * test_data[f'{ticker}_return']
+        test_data[f'Cumulative_Return'] = (1 + test_data[f'Total_Return']).cumprod()
+        test_data[f'Drawdown'] = (test_data[f'Cumulative_Return'] / test_data[f'Cumulative_Return'].cummax()) - 1
+        
+        # Calculate metrics and plot results
+        metrics = calculate_metrics(test_data, 'LSTM')
+        plot_results(test_data, metrics)
         
