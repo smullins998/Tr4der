@@ -30,8 +30,11 @@ class DataLoader:
     def strategy_data(self):
         return self._strategy_data
     
+    @property
+    def raw_strategy_data(self):
+        return self._raw_strategy_data
+    
     def execute_code(self) -> None:
         self._gpt_helper.execute_code()
         self._strategy_data = self._gpt_helper.strategy_data
-        
         

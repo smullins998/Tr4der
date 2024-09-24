@@ -56,6 +56,7 @@ class GptHelper:
             print('Loading data...')
             exec(self._gpt_code, namespace)
             self._strategy_data = namespace.get('_strategy_data')
+            print("strategy data", self._strategy_data)
             # Check if 'Date' is in the index, if not set it as the index
             if isinstance(self._strategy_data, DataFrame):
                 if 'Date' not in self._strategy_data.index.names:
@@ -194,7 +195,7 @@ class GptHelper:
         self._pandas_code_generate(self._data_prompt)
         self._pandas_code_execute()
         self._gpt_code_generate()
-        self._gpt_code_execute()
+        self._raw_strategy_data = self._gpt_code_execute()
         self._gpt_identify_strategy()
         self._gpt_call_strategy()
         self._gpt_call_strategy_execute()
@@ -203,3 +204,4 @@ class GptHelper:
     @property
     def strategy_data(self) -> DataFrame:
         return self._strategy_data
+    

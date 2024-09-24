@@ -36,8 +36,11 @@ class Tr4der:
         
     @property
     def strategy_data(self) -> DataFrame:
-        return self._data_loader.strategy_data
-        
+        df = self._data_loader.strategy_data
+        df = df[[ticker for ticker in df.columns if ticker != 'Date' and '_' not in ticker]]
+        return df
+    
+
     
 
 

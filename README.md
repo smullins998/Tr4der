@@ -2,8 +2,8 @@
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
 <picture>
-  <source srcset="./tr4der/images/Screenshot 2024-09-13 at 3.51.56 PM.png" media="(prefers-color-scheme: dark)" />
-  <img src="./tr4der/images/Screenshot 2024-09-13 at 3.55.14 PM.png" alt="Your image description">
+  <source srcset="./tr4der/images/tr4der.png" media="(prefers-color-scheme: dark)" />
+  <img src="./tr4der/images/tr4der.png" alt="Your image description">
 </picture>
 
 # Tr4der
