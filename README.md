@@ -7,19 +7,30 @@
 </picture>
 
 # Tr4der
+
+> Tested on Python 3.10 and later
+
 Tr4der is a algorithmic trading library for quantitative strategy ideation. Using natural language, you can easily generate and backtest trading strategies for specific stocks and ETFs. Tr4der will parse the user's input, retrieve the data, execute code to filter the data, then apply the trading strategy that the user specifies. All of the data is persisted on disk and can be accessed and modified at will. 
+
 
 ## Installation
 
-> Tested on Python 3.10 and later
+
+1. **Install the package**
 
 ```bash
 $ pip install tr4der
 ```
 
+2. **Set your OpenAI API key**
+
+  ##### Open the file `tr4der/utils/config.py` and set the `openai_api_key` to your OpenAI API key.
+
+
+
 ## Usage
 
-> Examples of prompts:
+Examples of prompts:
 - "I want to pair trade UBER and LYFT over the past 5 years"
 - "Go long on the top 5 PE stocks in the Nasdaq"
 - "Short the bottom 3 PE stocks in the S&P 500"
