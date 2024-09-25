@@ -30,7 +30,7 @@ def plot_results(df: pd.DataFrame, stats: dict) -> None:
     # Plot Cumulative Return
     axs[0].fill_between(df['Date'], df['Cumulative_Return'] - 1, 0, alpha=0.3, color='#1e90ff', label='Cumulative Return')
     axs[0].plot(df['Date'], df['Cumulative_Return'] - 1, color='#1e90ff', linewidth=2)
-    axs[0].set_title('Cumulative Return', fontsize=14)
+    axs[0].set_title('Your Strategy Cumulative Return', fontsize=14)
     axs[0].set_ylabel('Return', fontsize=12)
     axs[0].legend(loc='upper left')
 

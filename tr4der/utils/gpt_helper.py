@@ -45,7 +45,8 @@ class GptHelper:
     def _gpt_code_generate(self) -> None:
         self._gpt_code = self._generate_openai_response('gpt_code_generate', 
             tickers=self._filtered_data['ticker'].tolist(),
-            data_prompt=self._data_prompt
+            data_prompt=self._data_prompt,
+            today=date.today().strftime("%Y-%m-%d")
         )
         print(self._gpt_code)
     
@@ -195,7 +196,7 @@ class GptHelper:
         self._pandas_code_generate(self._data_prompt)
         self._pandas_code_execute()
         self._gpt_code_generate()
-        self._raw_strategy_data = self._gpt_code_execute()
+        self._gpt_code_execute()
         self._gpt_identify_strategy()
         self._gpt_call_strategy()
         self._gpt_call_strategy_execute()

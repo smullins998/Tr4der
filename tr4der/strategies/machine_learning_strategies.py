@@ -209,7 +209,7 @@ class MachineLearningStrategies:
         
     
     @staticmethod
-    def neural_network_regression(df: DataFrame, 
+    def neural_network(df: DataFrame, 
                                   technical_indicators: List = ['SMA_20', 'SMA_50', 'EMA_20', 'EMA_50', 'RSI_14'],
                                   max_iterations: int = 1000,
                                   hidden_layers: Tuple[int, int] = (100,100)) -> None:

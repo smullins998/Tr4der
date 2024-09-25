@@ -16,10 +16,6 @@ class TechnicalAnalysisStrategies:
         return "Object to experiment with different technical trades"
     
     
-    #########################################
-    # Trend-following Strategies
-    #########################################
-    
     @staticmethod
     def momentum_strategy(df: DataFrame = None, window: int = 5) -> None:
         original_len_cols = len(df.columns)
@@ -77,9 +73,6 @@ class TechnicalAnalysisStrategies:
         plot_results(df, metrics)
 
 
-    #########################################
-    # Mean Reversion Strategies
-    #########################################
     
     @staticmethod
     def mean_reversion_moving_average(df: DataFrame = None) -> None:
@@ -150,10 +143,7 @@ class TechnicalAnalysisStrategies:
         # Get output
         metrics = calculate_metrics(df, 'bollinger_bands')
         plot_results(df, metrics)
-
-    #########################################
-    # Arbitrage Strategies
-    #########################################
+    
     
     @staticmethod
     def pairs_trading(df: DataFrame = None, entry_threshold: float = 2.0, exit_threshold: float = 0.5, 

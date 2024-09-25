@@ -1,10 +1,12 @@
 [![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
-<picture>
-  <source srcset="./tr4der/images/tr4der.png" media="(prefers-color-scheme: dark)" />
-  <img src="./tr4der/images/tr4der.png" alt="Your image description">
-</picture>
+<div align="center">
+  <picture>
+    <source srcset="./tr4der/images/tr4der.png" media="(prefers-color-scheme: dark)" />
+    <img src="./tr4der/images/tr4der.png" alt="Tr4der logo">
+  </picture>
+</div>
 
 # Tr4der
 
@@ -138,7 +140,7 @@ A plot of the strategy will appear in your console.
 - **SVM Regression**
   - **Method**: `svm_regression(df)`
   - **Description**: Implements a basic SVM regression strategy with multiple technical indicators: SMA_20, SMA_50, EMA_20, EMA_50, RSI_14, and Previous Day Return. You may modify the technical indicators used in the strategy.
-  - **Signals**: Buy when the predicted return is positive, sell when it is negative. We found a negative correlation between the predicted returns and the actual returns, so we **Sell** when the model predicts a **Buy**.
+  - **Signals**: Buy when the predicted return is positive, sell when it is negative.
 
 - **Decision Tree Regression**
   - **Method**: `decision_tree_regression(df)`

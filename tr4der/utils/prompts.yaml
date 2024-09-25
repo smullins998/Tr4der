@@ -15,6 +15,7 @@ gpt_code_generate:
         
     Use the start date and end date from the prompt for the yfinance query.
     Do not reset the index of the dataframe.
+    Today is {today}.
 
 pandas_code_generate:
   system: "You are a data analyst and Python pandas expert. Generate concise, efficient pandas code to filter the dataframe. Return only the code, no markdown or comments."
@@ -43,4 +44,6 @@ strategy_call:
     Here is the class to call: [{strategy_definition}]
     Here are the arguments and parameters: [{args}]
     Use uppercase for tickers.
-    The call should look like this: class_name.your_strategy(df=self._strategy_data, *args, **kwargs) where the class_name is the name of the class and the your_strategy is the name of the strategy.
+    The call should look like this: class_name_here.your_strategy_here(df=self._strategy_data, *args, **kwargs)
+    The args are the arguments to the strategy.
+    The kwargs are the keyword arguments to the strategy.
