@@ -1,8 +1,8 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="tr4der",
-    version="0.1.0",
+    name="Tr4der",
+    version="14.0.0",
     author="Sean Mullins",
     author_email="smullins998@gmail.com",
     description="Tr4der is a algorithmic trading library for quantitative strategy ideation.",
@@ -10,12 +10,16 @@ setup(
     long_description_content_type="text/markdown",
     url="https://github.com/smullins998/tr4der",
     packages=find_packages(),
+    package_data={
+        'tr4der': ['*.png', '*.jpg', '*.jpeg', '*.gif'],
+    },
+    include_package_data=True,
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    python_requires=">=3.8",
+    python_requires=">=3.10",
     install_requires=[
         "matplotlib",
         "numpy",
@@ -23,7 +27,8 @@ setup(
         "pandas",
         "PyYAML",
         "seaborn",
-        "ta",
         "yfinance",
+        "tensorflow",
+        "scikit-learn",
     ],
 )

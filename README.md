@@ -1,5 +1,3 @@
-[![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
 <div align="center">
   <picture>
@@ -32,7 +30,15 @@ $ pip install tr4der
 
 2. **Set your OpenAI API key**
 
-  ##### Open the file `tr4der/utils/config.py` and set the `openai_api_key` to your OpenAI API key.
+```python
+import tr4der
+
+# Create instance of Tr4der
+trader = tr4der.Tr4der()
+
+# Set the API key
+trader.set_api_key("YOUR_OPENAI_API_KEY")
+```
 
 
 
@@ -52,7 +58,7 @@ import tr4der
 query = "I want to use mean reversion with bollinger bands to trade GOOGL for the past 10 years"
 
 # Pass the query to the Tr4der class
-trader = tr4der(query)
+trader.query(query)
 
 # Metric Results
 ==> 

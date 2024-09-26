@@ -3,7 +3,6 @@ from typing import List, Optional, Tuple
 
 import numpy as np
 import pandas as pd
-import ta
 from pandas import DataFrame
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
@@ -41,31 +40,19 @@ class MachineLearningStrategies:
             if window_match:
                 indicator_type = re.search(r"(sma|ema|rsi)", indicator.lower()).group(1)
                 if indicator_match == "sma":
-                    df[indicator] = (
-                        ta.trend.SMAIndicator(df[ticker], window=window_match)
-                        .sma_indicator()
-                        .shift(1)
-                    )
+                    df[indicator] = df[ticker].rolling(window=window_match).mean().shift(1)
                 elif indicator_match == "ema":
-                    df[indicator] = (
-                        ta.trend.EMAIndicator(df[ticker], window=window_match)
-                        .ema_indicator()
-                        .shift(1)
-                    )
+                    df[indicator] = df[ticker].ewm(span=window_match, adjust=False).mean().shift(1)
                 elif indicator_match == "rsi":
-                    df[indicator] = (
-                        ta.momentum.RSIIndicator(df[ticker], window=window_match)
-                        .rsi()
-                        .shift(1)
-                    )
+                    delta = df[ticker].diff()
+                    gain = (delta.where(delta > 0, 0)).rolling(window=window_match).mean()
+                    loss = (-delta.where(delta < 0, 0)).rolling(window=window_match).mean()
+                    rs = gain / loss
+                    df[indicator] = (100 - (100 / (1 + rs))).shift(1)
                 elif indicator_match == "macd":
-                    df[indicator] = (
-                        ta.trend.MACD(
-                            df[ticker], window_fast=12, window_slow=26, window_sign=9
-                        )
-                        .macd()
-                        .shift(1)
-                    )
+                    ema_12 = df[ticker].ewm(span=12, adjust=False).mean()
+                    ema_26 = df[ticker].ewm(span=26, adjust=False).mean()
+                    df[indicator] = (ema_12 - ema_26).shift(1)
             df[indicator] = df[indicator].pct_change()
 
         # Calculate the previous day return

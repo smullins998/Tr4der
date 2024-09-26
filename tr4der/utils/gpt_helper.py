@@ -13,8 +13,7 @@ from .config import open_ai_model
 
 class GptHelper:
 
-    def __init__(self, api_key: str, data_prompt: str, ticker_data: DataFrame) -> None:
-        openai.api_key = api_key
+    def __init__(self, data_prompt: str, ticker_data: DataFrame) -> None:
         self._data_prompt = data_prompt
         self._ticker_data = ticker_data
         self._load_prompts()
@@ -54,7 +53,7 @@ class GptHelper:
             data_prompt=self._data_prompt,
             today=date.today().strftime("%Y-%m-%d"),
         )
-        print(self._gpt_code)
+        #print(self._gpt_code)
 
     def _gpt_code_execute(self) -> Dict[str, Any]:
         namespace: Dict[str, Any] = {
@@ -68,7 +67,7 @@ class GptHelper:
             print("Loading data...")
             exec(self._gpt_code, namespace)
             self._strategy_data = namespace.get("_strategy_data")
-            print("strategy data", self._strategy_data)
+            #print("strategy data", self._strategy_data)
             # Check if 'Date' is in the index, if not set it as the index
             if isinstance(self._strategy_data, DataFrame):
                 if "Date" not in self._strategy_data.index.names:
@@ -90,7 +89,7 @@ class GptHelper:
             columns=", ".join(self._ticker_data.columns),
             data_prompt=self._data_prompt,
         )
-        print(self._pandas_code)
+        #print(self._pandas_code)
         return self._pandas_code
 
     def _pandas_code_execute(self) -> None:
@@ -173,7 +172,7 @@ class GptHelper:
                 if callable(getattr(cls, method)) and not method.startswith("__")
             }
             all_methods.update(methods)
-        print(all_methods)
+       # print(all_methods)
         strategy_method = all_methods.get(self._strategy_identifier)
         if not strategy_method:
             raise ValueError(
@@ -200,8 +199,8 @@ class GptHelper:
         )
         self._strategy_function_call = response.choices[0].message.content
 
-        print(messages)
-        print(self._strategy_function_call)
+        #print(messages)
+        #print(self._strategy_function_call)
 
     def _gpt_call_strategy_execute(self) -> None:
         from ..strategies.machine_learning_strategies import MachineLearningStrategies

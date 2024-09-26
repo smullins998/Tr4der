@@ -7,13 +7,6 @@ import yfinance as yf
 from .gpt_helper import GptHelper
 from .type_transformation import transform_data
 
-try:
-    from .config import openai_api_key
-except ImportError:
-    raise ImportError(
-        "OpenAI API key not found. Please set the OPENAI_API_KEY in the config file."
-    )
-
 
 class DataLoader:
 
@@ -30,7 +23,7 @@ class DataLoader:
         self._ticker_data = transform_data(self._ticker_data)
 
         # Initialize the GptHelper class
-        self._gpt_helper = GptHelper(openai_api_key, data_prompt, self._ticker_data)
+        self._gpt_helper = GptHelper(data_prompt, self._ticker_data)
 
     @property
     def strategy_data(self):

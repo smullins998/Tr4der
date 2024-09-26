@@ -1,7 +1,6 @@
 from typing import List, Optional
 import numpy as np
 import pandas as pd
-import ta
 from pandas import DataFrame
 from tr4der.utils.metrics import calculate_metrics
 from tr4der.utils.plot import plot_results
