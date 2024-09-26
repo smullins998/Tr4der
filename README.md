@@ -8,11 +8,17 @@
   </picture>
 </div>
 
-# Tr4der
+<h2 align="center">Algorithmic Trading Library for Quantitative Strategy Ideation</h2>
+
+<p align="center">
+<a href="https://github.com/Naereen/StrapDown.js/blob/master/LICENSE"><img alt="GitHub license" src="https://img.shields.io/github/license/Naereen/StrapDown.js.svg"></a>
+<a href="http://makeapullrequest.com"><img alt="PRs Welcome" src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square"></a>
+</p>
 
 > Tested on Python 3.10 and later
 
-Tr4der is a algorithmic trading library for quantitative strategy ideation. Using natural language, you can easily generate and backtest trading strategies for specific stocks and ETFs. Tr4der will parse the user's input, retrieve the data, execute code to filter the data, then apply the trading strategy that the user specifies. All of the data is persisted on disk and can be accessed and modified at will. 
+Tr4der is an algorithmic trading library for quantitative strategy ideation. Using natural language, you can easily generate and backtest trading strategies for specific stocks and ETFs. Tr4der will parse the user's input, retrieve the data, execute code to filter the data, then apply the trading strategy that the user specifies. All of the data is persisted on disk and can be accessed and modified at will.
+
 
 
 ## Installation
@@ -131,7 +137,7 @@ A plot of the strategy will appear in your console.
   - **Description**: Implements a basic pairs trading strategy using the price spread between two stocks.
   - **Signals**: Buy one stock and sell the other when their price spread deviates significantly from its mean.
 
-### Machine Learning Strategies
+### Machine Learning Strategies (Single stock support for now)
 - **Linear Regression Strategy**
   - **Method**: `linear_regression(df)`
   - **Description**: Implements a basic linear regression strategy on previous n days returns (n=5).
