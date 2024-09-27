@@ -145,32 +145,32 @@ A plot of the strategy will appear in your console.
 
 ### Machine Learning Strategies (Single stock support for now)
 - **Linear Regression Strategy**
-  - **Method**: `linear_regression(df)`
+  - **Method**: `linear_regression(df, lags = 5)`
   - **Description**: Implements a basic linear regression strategy on previous n days returns (n=5).
   - **Signals**: Buy when the current day's return is greater than the predicted return, sell when it is less.
 
 - **SVM Regression**
-  - **Method**: `svm_regression(df)`
+  - **Method**: `svm_regression(df, technical_indicators=['SMA_20', 'SMA_50', 'EMA_20', 'EMA_50', 'RSI_14'])`
   - **Description**: Implements a basic SVM regression strategy with multiple technical indicators: SMA_20, SMA_50, EMA_20, EMA_50, RSI_14, and Previous Day Return. You may modify the technical indicators used in the strategy.
   - **Signals**: Buy when the predicted return is positive, sell when it is negative.
 
 - **Decision Tree Regression**
-  - **Method**: `decision_tree_regression(df)`
+  - **Method**: `decision_tree_regression(df, technical_indicators=['SMA_20', 'SMA_50', 'EMA_20', 'EMA_50', 'RSI_14'])`
   - **Description**: Implements a basic decision tree regression strategy with multiple technical indicators: SMA_20, SMA_50, EMA_20, EMA_50, RSI_14, and Previous Day Return. You may modify the technical indicators used in the strategy.
   - **Signals**: Buy when the predicted return is positive, sell when it is negative. 
 
 - **Nearest Neighbors Regression**
-  - **Method**: `nearest_neighbors_regression(df)`
+  - **Method**: `nearest_neighbors_regression(df, technical_indicators=['SMA_20', 'SMA_50', 'EMA_20', 'EMA_50', 'RSI_14'])`
   - **Description**: Implements a basic nearest neighbors regression strategy with multiple technical indicators: SMA_20, SMA_50, EMA_20, EMA_50, RSI_14, and Previous Day Return. You may modify the technical indicators used in the strategy.
   - **Signals**: Buy when the predicted return is positive, sell when it is negative.
 
 - **Neural Network Regression**
-  - **Method**: `neural_network_regression(df)`
+  - **Method**: `neural_network_regression(df, technical_indicators=['SMA_20', 'SMA_50', 'EMA_20', 'EMA_50', 'RSI_14'], hidden_layers=(100, 100), max_iterations=1000)`
   - **Description**: Implements a basic neural network regression strategy with multiple technical indicators: SMA_20, SMA_50, EMA_20, EMA_50, RSI_14, and Previous Day Return. You may modify the technical indicators used in the strategy.
   - **Signals**: Buy when the predicted return is positive, sell when it is negative.
 
 - **LSTM Regression**
-  - **Method**: `lstm_regression(df)`
+  - **Method**: `lstm_regression(df, technical_indicators=['SMA_20', 'SMA_50', 'EMA_20', 'EMA_50', 'RSI_14'], sequence_length=60, epochs=25, batch_size=32)`
   - **Description**: Implements a basic LSTM regression strategy with multiple technical indicators: SMA_20, SMA_50, EMA_20, EMA_50, RSI_14, and Previous Day Return. You may modify the technical indicators used in the strategy.
   - **Signals**: Buy when the predicted return is positive, sell when it is negative.
 

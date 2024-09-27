@@ -14,7 +14,8 @@ class DataLoader:
 
         # Transform the data from csv to a dataframe
         self._ticker_data = pd.read_csv(
-            "./tr4der/data/all_ticker_data.csv", header=0
+            "https://raw.githubusercontent.com/smullins998/tr4der/main/tr4der/data/all_ticker_data.csv",
+            header=0,
         ).transpose()
         self._ticker_data.columns = self._ticker_data.iloc[0]
         self._ticker_data = self._ticker_data.iloc[1:]

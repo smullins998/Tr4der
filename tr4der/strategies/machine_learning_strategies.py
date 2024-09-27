@@ -38,7 +38,6 @@ class MachineLearningStrategies:
             window_match = int(re.search(r"\d+", indicator).group())
             indicator_match = " ".join(re.findall("[a-zA-Z]+", indicator)).lower()
             if window_match:
-                indicator_type = re.search(r"(sma|ema|rsi)", indicator.lower()).group(1)
                 if indicator_match == "sma":
                     df[indicator] = df[ticker].rolling(window=window_match).mean().shift(1)
                 elif indicator_match == "ema":
@@ -48,7 +47,7 @@ class MachineLearningStrategies:
                     gain = (delta.where(delta > 0, 0)).rolling(window=window_match).mean()
                     loss = (-delta.where(delta < 0, 0)).rolling(window=window_match).mean()
                     rs = gain / loss
-                    df[indicator] = (100 - (100 / (1 + rs))).shift(1)
+                    df[indicator] = 100 - (100 / (1 + rs)).shift(1)
                 elif indicator_match == "macd":
                     ema_12 = df[ticker].ewm(span=12, adjust=False).mean()
                     ema_26 = df[ticker].ewm(span=26, adjust=False).mean()

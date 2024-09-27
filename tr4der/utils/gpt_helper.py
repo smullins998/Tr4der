@@ -1,6 +1,6 @@
 from datetime import date
-from pathlib import Path
 from typing import Any, Dict
+import requests
 
 import openai
 import pandas as pd
@@ -28,9 +28,14 @@ class GptHelper:
         return wrapper
 
     def _load_prompts(self) -> None:
-        prompts_path = Path(__file__).parent / "prompts.yaml"
-        with open(prompts_path, "r") as f:
-            self._prompts = yaml.safe_load(f)
+        # Load the prompts from the prompts.yaml file
+        url = "https://raw.githubusercontent.com/smullins998/tr4der/main/tr4der/utils/prompts.yaml"
+        # Fetch the content from the URL
+        response = requests.get(url)
+        yaml_content = response.text
+        # Parse the YAML content
+        self._prompts = yaml.safe_load(yaml_content)
+
 
     def _generate_openai_response(self, prompt_key: str, **kwargs) -> str:
         response = openai.chat.completions.create(
