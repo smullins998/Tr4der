@@ -126,7 +126,7 @@ def transform_data(df) -> None:
     )  # Convert with coercion for errors
 
     # First filter out any rows with market cap below 100 million
-    # Results can be majorily impacted by microcaps
+    # Results can be majorly impacted by microcaps
 
     df = df[df["marketCap"] > 100000000]
 
