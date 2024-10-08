@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="Tr4der",
-    version="14.0.0",
+    version="1.1.0",
     author="Sean Mullins",
     author_email="smullins998@gmail.com",
     description="Tr4der is a algorithmic trading library for quantitative strategy ideation.",

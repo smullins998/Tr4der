@@ -1,7 +1,7 @@
 
 <div align="center">
   <picture>
-    <source srcset="./tr4der/images/tr4der.png" media="(prefers-color-scheme: dark)" />
+    <source srcset="./tr4der/images/tr4der-dark.png" media="(prefers-color-scheme: dark)" />
     <img src="./tr4der/images/tr4der.png" alt="Tr4der logo">
   </picture>
 </div>
