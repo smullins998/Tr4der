@@ -6,7 +6,7 @@
   </picture>
 </div>
 
-<h2 align="center">Algorithmic Trading Library for Quantitative Strategy Ideation</h2>
+<h2 align="center">Backtesting Library for Quantitative Strategy Ideation</h2>
 
 <p align="center">
 <a href="https://github.com/Naereen/StrapDown.js/blob/master/LICENSE"><img alt="GitHub license" src="https://img.shields.io/github/license/Naereen/StrapDown.js.svg"></a>
